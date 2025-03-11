@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+    <link rel="shortcut icon" type="image/x-icon" th:href="@{/images/orange-hands-ask.png}">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" th:href="@{/css/bootstrap.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/responsive.bootstrap4.css}">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" th:href="@{/css/normalize.css}" />
+    <link rel="stylesheet" th:href="@{/css/chartist.css}">
+    <link rel="stylesheet" th:href="@{/css/dashboard.css}">
+    <link rel="stylesheet" th:href="@{/css/cards.css}">
+    <!--===============================================================================================-->
+    <script th:src="@{/js/jquery-3.5.1.js}"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.bundle.min.js"></script>
+</head>
+
+<body>
+    <div class="main-header">
+        <!-- Logo Header -->
+        <div class="logo-header" data-background-color="orange">
+            <a href="#" class="logo"> <img height="115px" th:src="@{/images/askme-logo-white.png}" alt="navbar brand" class="navbar-brand">
+            </a>
+            <button class="navbar-toggler sidenav-toggler ml-auto" type="button" data-toggle="collapse" data-target="collapse" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"> <i class="fas fa-bars"></i>
+                </span>
+            </button>
+            <button class="topbar-toggler more">
+                <i class="fas fa-ellipsis-v"></i>
+            </button>
+            <div class="nav-toggle">
+                <button class="btn btn-toggle toggle-sidebar">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+        </div>
+        <!-- End Logo Header -->
+        <!-- Navbar Header -->
+        <nav class="navbar navbar-header navbar-expand-lg" data-background-color="orange">
+            <div class="container-fluid">
+                <ul class="navbar-nav topbar-nav ml-md-auto align-items-center">
+                    <li class="nav-item dropdown hidden-caret"><a class="dropdown-toggle profile-pic" data-toggle="dropdown" href="#" aria-expanded="false">
+                            <i class="fas fa-cog fa-lg text-white"></i>
+                        </a>
+                        <ul class="dropdown-menu dropdown-user animated fadeIn">
+                            <div class="dropdown-user-scroll scrollbar-outer">
+                                <li>
+                                    <div class="user-box">
+                                        <div class="u-text">
+                                            <h4 th:text="${#authentication.getPrincipal().getUsername()}"></h4>
+                                            <p class="text-muted" th:text="${user.email}"></p>
+                                            <a th:href="@{'/profile'}" class="btn btn-xs btn-primary btn-sm">View Profile</a>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li>
+                                    <form th:action="@{/logout}" method="post">
+                                        <input type="submit" class="dropdown-item" value="Logout" />
+                                    </form>
+                                </li>
+                            </div>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+        <!-- End Navbar -->
+    </div>
+	
+    <div class="wrapper">
+		
+		<div th:replace="~{layout/headerAndNav :: logo-header-navbar}"></div>
+		<div th:replace="~{layout/headerAndNav :: sidebar}"></div>
+
+		
+		<div class="main-panel">
+			<div class="content">
+				<div class="panel-header bg-primary-gradient">
+					<div class="page-inner py-5">
+						<div class="d-flex align-items-left align-items-md-center flex-column flex-md-row">
+							<div>
+								<h2 class="text-white pb-2 fw-bold">Dashboard</h2>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="page-inner mt--5">
+					<div class="row mt--2">
+						<div class=" col-lg-3 col-md-6 col-sm-6">
+							<div class="card card-stats">
+								<div class="card-header card-header-icon">
+									<div class="card-icon card-header-warning ">
+										<i class="fas fa-bookmark"></i>
+									</div>
+									<p class="card-category">Tests</p>
+									<h3 class="card-title" th:text="${testsNumber}"> 0 <small>tests</small>
+									</h3>
+								</div>
+								<div class="card-footer">
+									<div class="stats">
+										<a th:href="@{'/tests'}">See Tests</a>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class=" col-lg-3 col-md-6 col-sm-6">
+							<div class="card card-stats">
+								<div class="card-header  card-header-icon">
+									<div class="card-icon card-header-info">
+										<i class="fas fa-question-circle"></i>
+									</div>
+									<p class="card-category">Add requests</p>
+									<h3 class="card-title" th:text="${requestsNumber}"> 0 <small>requests</small>
+									</h3>
+								</div>
+								<div class="card-footer">
+									<div class="stats">
+										<a class="a-blue" th:href="@{'/requests'}">See Requests</a>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class=" col-lg-3 col-md-6 col-sm-6">
+							<div class="card card-stats">
+								<div class="card-header  card-header-icon">
+									<div class="card-icon card-header-danger">
+										<i class="fas fa-users"></i>
+									</div>
+									<p class="card-category">Users</p>
+									<h3 class="card-title" th:text="${usersNumber}"> 0 <small>users</small>
+									</h3>
+								</div>
+								<div class="card-footer">
+									<div class="stats">
+										<a class="a-red" th:href="@{'/users'}">See Users</a>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class=" col-lg-3 col-md-6 col-sm-6">
+							<div class="card card-stats">
+								<div class="card-header  card-header-icon">
+									<div class="card-icon card-header-success">
+										<i class="fas fa-receipt"></i>
+									</div>
+									<p class="card-category">Results</p>
+									<h3 class="card-title" th:text="${resultsNumber}"> 0 <small>results</small>
+									</h3>
+								</div>
+								<div class="card-footer">
+									<div class="stats">
+										<a class="a-green" th:href="@{'/results'}">See Results</a>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-12">
+							<div class="card card-chart">
+								<div class="card-header card-header-danger">
+									<div class="ct-chart"></div>
+								</div>
+								<div class="card-body">
+									<h4 class="card-title" style="color: black;">Number of taken tests</h4>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+    <!-- jQuery UI -->
+    <script th:src="@{/js/jquery/jquery-ui.min.js}"></script>
+    <script th:src="@{/js/jquery/jquery.ui.touch-punch.min.js}"></script>
+    <!-- jQuery Scrollbar -->
+    <script th:src="@{/js/jquery/jquery.scrollbar.min.js}"></script>
+    <script th:src="@{/js/dashboard.js}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartist@latest/dist/chartist.min.js"></script>
+    <script th:src="@{/js/statistics.js}"></script>
+    <script th:inline="javascript">
+        var resultsNumerInmonths = /*[[${numberOfResultsInMonths}]]*/ '';
+        initStatistics(resultsNumerInmonths);
+    </script>
+</body>
+
+</html>

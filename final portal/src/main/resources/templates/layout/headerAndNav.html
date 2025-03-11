@@ -1,0 +1,124 @@
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+</head>
+<body>
+    <div class="main-header" th:fragment="logo-header-navbar">
+        <!-- Logo Header -->
+        <div class="logo-header" data-background-color="orange">
+            <a href="#" class="logo"> 
+                <img height="115px" th:src="@{/images/askme-logo-white.png}" alt="navbar brand" class="navbar-brand">
+            </a>
+            <button class="navbar-toggler sidenav-toggler ml-auto" type="button" data-toggle="collapse" data-target="#collapse" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"> <i class="fas fa-bars"></i>
+                </span>
+            </button>
+            <button class="topbar-toggler more">
+                <i class="fas fa-ellipsis-v"></i>
+            </button>
+            <div class="nav-toggle">
+                <button class="btn btn-toggle toggle-sidebar">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+        </div>
+        <!-- End Logo Header -->
+        <!-- Navbar Header -->
+        <nav class="navbar navbar-header navbar-expand-lg" data-background-color="orange">
+            <div class="container-fluid">
+                <ul class="navbar-nav topbar-nav ml-md-auto align-items-center">
+                    <li class="nav-item dropdown hidden-caret">
+                        <a class="dropdown-toggle profile-pic" data-toggle="dropdown" href="#" aria-expanded="false">
+                            <i class="fas fa-cog fa-lg text-white"></i>
+                        </a>
+                        <ul class="dropdown-menu dropdown-user animated fadeIn">
+                            <li>
+                                <div class="dropdown-user-scroll scrollbar-outer">
+                                    <div class="user-box">
+                                        <div class="u-text">
+                                            <h4 th:text="${#authentication.getPrincipal().getUsername()}"></h4>
+                                            <p class="text-muted" th:text="${user.email}"></p>
+                                            <a th:href="@{'/profile'}" class="btn btn-xs btn-primary btn-sm">View Profile</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+                            <li>
+                                <form th:action="@{/logout}" method="post">
+                                    <input type="submit" class="dropdown-item" value="Logout" />
+                                </form>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+        <!-- End Navbar -->
+    </div>
+
+    <!-- Sidebar -->
+    <div class="sidebar sidebar-style-2" th:fragment="sidebar">
+        <div class="sidebar-wrapper scrollbar scrollbar-inner">
+            <div class="sidebar-content">
+                <div class="user">
+                    <div class="float-left mr-2">
+                        <h5 id="role" class="text-muted">
+                            You are logged in as <span th:text="${user.role == 'ROLE_USER' ? 'User' : 'Admin'}"></span>
+                        </h5>
+                    </div>
+                    <div class="info">
+                        <a data-toggle="collapse" href="#collapseExample" aria-expanded="true">
+                            <span> 
+                                <span class="user-level"></span>
+                            </span>
+                        </a>
+                        <div class="clearfix"></div>
+                    </div>
+                </div>
+                <ul class="nav nav-primary">
+                    <li sec:authorize="hasRole('ADMIN')" class="nav-item">
+                        <a th:href="@{'/'}"> 
+                            <i class="fas fa-home"></i>
+                            <p>Dashboard</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a th:href="@{'/tests'}"> 
+                            <i class="fas fa-bookmark"></i>
+                            <p>Tests</p>
+                        </a>
+                    </li>
+                    <li sec:authorize="hasRole('ADMIN')" class="nav-item">
+                        <a th:href="@{'/users'}"> 
+                            <i class="fas fa-users"></i>
+                            <p>Users</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a th:href="@{'/results'}"> 
+                            <i class="fas fa-poll-h"></i>
+                            <p>Results</p>
+                        </a>
+                    </li>
+                    <li sec:authorize="hasRole('ADMIN')" class="nav-item">
+                        <a th:href="@{'/requests'}">
+                            <i class="fas fa-user-plus"></i>
+                            <p>Requests</p>
+                        </a>
+                    </li>
+                       <li sec:authorize="hasRole('ADMIN')" class="nav-item">
+                        <a th:href="@{'/ai-response'}"> 
+                            <i class="fas fa-robot"></i>
+                            <p>AI</p>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!-- End Sidebar -->
+</body>
+</html>

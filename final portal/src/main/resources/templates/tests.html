@@ -1,0 +1,331 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+
+<head>
+	<meta charset="UTF-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	
+	<meta name="_csrf" th:content="${_csrf.token}" />
+	<meta name="_csrf_header" th:content="${_csrf.headerName}" />
+	
+	<title>Tests</title>
+	<link rel="shortcut icon" type="image/x-icon" th:href="@{/images/orange-hands-ask.png}">
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
+	<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" th:href="@{/css/bootstrap.css}">
+	<link rel="stylesheet" type="text/css" th:href="@{/css/dataTables.bootstrap4.css}">
+	<link rel="stylesheet" type="text/css" th:href="@{/css/responsive.bootstrap4.css}">
+	<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" th:href="@{/css/normalize.css}" />
+	<link rel="stylesheet" th:href="@{/css/dashboard.css}">
+	<link rel="stylesheet" th:href="@{/css/cards.css}">
+	<link rel="stylesheet" th:href="@{/css/form.css}">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/izitoast/1.4.0/css/iziToast.min.css" integrity="sha512-O03ntXoVqaGUTAeAmvQ2YSzkCvclZEcPQu1eqloPaHfJ5RuNGiS4l+3duaidD801P50J28EHyonCV06CUlTSag==" crossorigin="anonymous" />
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/izitoast/1.4.0/js/iziToast.js" integrity="sha512-OmBbzhZ6lgh87tQFDVBHtwfi6MS9raGmNvUNTjDIBb/cgv707v9OuBVpsN6tVVTLOehRFns+o14Nd0/If0lE/A==" crossorigin="anonymous"></script>
+	<!--===============================================================================================-->
+	<script th:src="@{/js/jquery-3.5.1.js}"></script>
+	<script th:src="@{/js/jquery.dataTables.js}"></script>
+	<script th:src="@{/js/dataTables.bootstrap4.js}"></script>
+	<script th:src="@{/js/dataTables.responsive.js}"></script>
+	<script th:src="@{/js/responsive.bootstrap4.js}"></script>
+	<!--===============================================================================================-->
+	<link rel="stylesheet" th:href="@{/css/bootstrap-select.css}" />
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.bundle.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/js/bootstrap-select.min.js"></script>
+	<script type="text/javascript">
+	</script>
+</head>
+
+<body>
+	<div id="wrapper" class="wrapper">
+		<div th:insert="layout/headerAndNav :: logo-header-navbar"></div>
+		<div th:insert="layout/headerAndNav :: sidebar"></div>
+		<div class="main-panel">
+			<div class="content">
+				<div class="panel-header bg-primary-gradient">
+					<div class="page-inner py-5">
+						<div class="d-flex align-items-left align-items-md-center flex-column flex-md-row">
+							<div>
+								<h2 class="text-white pb-2 fw-bold">Tests</h2>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="page-inner mt--5">
+					<div class="row m--2">
+						<div class="col-md-12">
+							<!-- Tabs with icons on Card -->
+							<div class="card card-nav-tabs">
+								<div class="card-header card-header-tabs card-header-warning">
+									<!-- colors: "header-primary", "header-info", "header-success", "header-warning", "header-danger" -->
+									<div class="nav-tabs-navigation">
+										<div class="nav-tabs-wrapper">
+											<ul class="nav nav-tabs" data-tabs="tabs">
+												<li class="nav-item"><a class="nav-link active" href="#see-tests" data-toggle="tab"> See Tests <div class="ripple-container"></div>
+													</a></li>
+												<li sec:authorize="hasRole('ADMIN')" class="nav-item"><a class="nav-link" href="#add-test" data-toggle="tab"> Add Test <div class="ripple-container"></div>
+													</a></li>
+											</ul>
+										</div>
+									</div>
+								</div>
+								<div class="card-body ">
+									<div class="tab-content text-center">
+										<div class="tab-pane active" id="see-tests">
+											<!-- See Tests tab-->
+											<div class="table-container" style="padding: 15px; margin: 0 auto;">
+												<div>
+													<div id="tests-table-div">
+														<table id="tests-data-table" class="table table-striped table-bordered dt-responsive nowrap" style="width: 100%">
+															<thead>
+																<tr>
+																	<th>No.</th>
+																	<th>Name</th>
+																	<th>Total Marks</th>
+																	<th>Time</th>
+																	<th class="hide" data-field="test-id">testId</th>
+																	<th>Actions</th>
+																</tr>
+															</thead>
+															<tbody>
+																<tr th:each="test, stat  : ${tests}">
+																	<td th:text="${stat.index + 1}"></td>
+																	<td th:text="${test.name}"></td>
+																	<td th:text="${test.totalMark}"></td>
+																	<td th:text="${test.time}"></td>
+																	<td class="hide" data-field="test-id" th:text="${test.id}"></td>
+																	<td>
+																		<form sec:authorize="hasRole('ADMIN')" th:method="get" th:action="@{/questions}" style="display: inline-block;">
+																			<input type="hidden" name="testId" th:value="${test.id}">
+																			<button class="btn btn-warning btn-sm" style="background-color: #F8B739">
+																				<i class="fas fa-eye" style="color: white"></i>
+																			</button>
+																		</form>
+																		<button sec:authorize="hasRole('ADMIN')" class="editBtn btn btn-warning btn-sm " data-toggle="modal" data-target="#editModal" style="background-color: #D88B33">
+																			<i class="fas fa-edit" style="color: white"></i>
+																		</button>
+																		<button sec:authorize="hasRole('ADMIN')" class="deleteBtn btn btn-warning btn-sm " data-toggle="modal" data-target="#deleteModal" style="background-color: #E5B177">
+																			<i class="fas fa-trash-alt" style="color: white"></i>
+																		</button>
+																		<form sec:authorize="hasRole('USER')" th:method="POST" th:action="@{/test}" style="display: inline-block;">
+																		  <input type="hidden" name="testId" th:value="${test.id}" readonly="readonly">
+																		  
+																		  <!-- Start Test button disabled by default -->
+																		  <button id="startTestBtn" class="startBtn btn btn-warning btn-sm" type="submit" disabled style="background-color: #E5B177">
+																		    Start test
+																		  </button>
+																		  
+																		  <!-- Verify button triggers the modal -->
+																		  <button id="verifyBtn" type="button" class="startBtn btn btn-warning btn-sm" style="background-color: #E5B177" data-toggle="modal" data-target="#verifyModal">
+																		    Verify
+																		  </button>
+																		</form>
+																	</td>
+																</tr>
+															</tbody>
+														</table>
+													</div>
+												</div>
+											</div>
+											<!--/See Tests tab-->
+										</div>
+										
+										
+										<!-- Verification Modal -->
+										<div class="modal fade" id="verifyModal" tabindex="-1" role="dialog" aria-labelledby="verifyModalLabel" aria-hidden="true">
+										  <div class="modal-dialog" role="document">
+										    <div class="modal-content">
+										      <div class="modal-header">
+										        <h5 class="modal-title" id="verifyModalLabel">Enter Verification Code</h5>
+										        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+										          <span aria-hidden="true">&times;</span>
+										        </button>
+										      </div>
+										      <div class="modal-body">
+										        <form id="verificationForm">
+										          <div class="form-group">
+										            <label for="verificationCodeInput">Verification Code</label>
+										            <input type="text" class="form-control" id="verificationCodeInput" placeholder="Enter code" required>
+										          </div>
+										          <button type="submit" class="btn btn-primary">Submit</button>
+										        </form>
+										      </div>
+										    </div>
+										  </div>
+										</div>
+										
+										
+										
+										<!--/add Tests tab-->
+										<div sec:authorize="hasRole('ADMIN')" class="tab-pane" id="add-test">
+											<form id="add-test-form" th:action="@{/add-test}" th:object="${test}" method="POST">
+												<div class="row">
+													<div class="col-md-4">
+														<div class="form__group ">
+															<input type="text" name="testName" th:field="*{name}" placeholder="Test Name" class="form__field"> <label class=" form__label" for="testName">Test Name</label>
+														</div>
+													</div>
+													<div class="col-md-4">
+														<div class="form__group">
+															<input type="text" th:field="*{time}" name="time" placeholder="Time" class="form__field"> <label class=" form__label" for="time">Time (minutes)</label>
+														</div>
+													</div>
+												</div>
+												<button type="submit" id="success" class="btn btn-primary pull-right">
+													<i class="fas fa-plus"></i><span> Add new test</span>
+												</button>
+												<div class="clearfix"></div>
+											</form>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div sec:authorize="hasRole('ADMIN')" class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="ModalLabel" aria-hidden="true">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="ModalLabel">Edit Test</h5>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body">
+						<form method="POST" th:action="@{/edit-test}" th:object="${test}" id="editTestForm">
+							<input type="hidden" name="action" value="editForm">
+							<div class="row">
+								<div class="col-md-12">
+									<div class="form__group ">
+										<input id="editTestId" type="text" name="editedTestId" th:field="*{id}" placeholder="Test id" class="form__field" readonly="readonly"> <label class=" form__label" for="editTestId">Test ID (unchangeable)</label>
+									</div>
+								</div>
+								<div class="col-md-12">
+									<div class="form__group ">
+										<input id="editTestName" type="text" name="editedTestName" th:field="*{name}" placeholder="Test Name" class="form__field"> <label class=" form__label" for="editTestName">Test Name</label>
+									</div>
+								</div>
+								<div class="col-md-12">
+									<div class="form__group">
+										<input id="editTime" type="text" name="editedTime" th:field="*{time}" placeholder="Time" class="form__field">
+										<label class=" form__label" for="editTotalMarks">Time</label>
+									</div>
+								</div>
+							</div>
+							<div class="modal-footer">
+								<a class="btn text-muted" data-dismiss="modal">Close</a>
+								<button id="saveModalButton" class="btn btn-primary pull-right">
+									<i class="fas fa-pencil-alt"></i><span> Save changes</span>
+								</button>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div sec:authorize="hasRole('ADMIN')" id="deleteModal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+			<div class="modal-dialog modal-dialog-centered" role="document">
+				<div class="modal-content confirm-modal-content border-0" style="background-color: transparent;">
+					<div class="modal-body p-0">
+						<form th:action="@{/delete-test}" th:object="${test}" method="POST">
+							<input id="deleteTestId" type="hidden" th:field="*{id}" placeholder="Test id" class="form__field" readonly="readonly">
+							<div class="card border-0 p-sm-3 p-2 justify-content-center">
+								<div class="card-header pb-0 bg-white border-0 ">
+									<div class="row">
+										<div class="col ml-auto">
+											<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+												<span aria-hidden="true">&times;</span>
+											</button>
+										</div>
+									</div>
+									<p class="font-weight-bold mb-2" style="color: black;">Are you sure you want to delete this test ?</p>
+									<p id="confirmTestName" class="text-muted "></p>
+								</div>
+								<button type="submit" id="deleteModalButton" class="btn btn-danger">delete</button>
+								<a class="btn text-muted" data-dismiss="modal">Close</a>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- jQuery UI -->
+	<script th:src="@{/js/jquery/jquery-ui.min.js}"></script>
+	<script th:src="@{/js/jquery/jquery.ui.touch-punch.min.js}"></script>
+	<!-- jQuery Scrollbar -->
+	<script th:src="@{/js/jquery/jquery.scrollbar.min.js}"></script>
+	<script src="https://unpkg.com/bootstrap-table@1.14.2/dist/bootstrap-table.min.js"></script>
+	<!-- dashboard JS -->
+	<script th:src="@{/js/dashboard.js}"></script>
+	<script th:src="@{/js/tests.js}"></script>
+	<script th:inline="javascript">
+	var action = /*[[${action}]]*/ '';
+	if(action == "saveTest") {
+		iziToast.success({
+			title: 'New Test',
+			message: 'Successfully inserted record',
+			position: 'topRight'
+		});
+	} else if(action == "deleteTest") {
+		iziToast.success({
+			title: 'Delete Test',
+			message: 'Successfully deleted record',
+			position: 'topRight'
+		});
+	} else if(action == "updateTest") {
+		iziToast.success({
+			title: 'Update Test',
+			message: 'Successfully updated record',
+			position: 'topRight'
+		});
+	}
+	
+	$(document).ready(function(){
+	    // Get CSRF token and header name from meta tags
+	    var csrfToken = $('meta[name="_csrf"]').attr('content');
+	    var csrfHeader = $('meta[name="_csrf_header"]').attr('content');
+	    
+	    $("#verificationForm").submit(function(event){
+	        event.preventDefault();  // Prevent the default form submission
+	        
+	        // Retrieve testId and entered verification code
+	        var testId = $("[name='testId']").val();
+	        var code = $("#verificationCodeInput").val();
+	        
+	        $.ajax({
+	            url: '/verifyCode',
+	            type: 'POST',
+	            contentType: 'application/json',
+	            data: JSON.stringify({ testId: testId, code: code }),
+	            beforeSend: function(xhr) {
+	                // Include the CSRF token in the header
+	                xhr.setRequestHeader(csrfHeader, csrfToken);
+	            },
+	            success: function(response) {
+	                if (response.verified) {
+	                    $("#startTestBtn").prop("disabled", false);
+	                    alert("Verification successful. You can now start the test.");
+	                    $("#verifyModal").modal("hide");
+	                } else {
+	                    alert("Verification failed. Please try again.");
+	                }
+	            },
+	            error: function(xhr, status, error) {
+	                console.error("Error during verification:", error);
+	                alert("An error occurred. Please try again later.");
+	            }
+	        });
+	    });
+	});
+	
+	
+	
+	</script>
+</body>
+
+</html>
