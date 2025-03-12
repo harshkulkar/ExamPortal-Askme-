@@ -1,4 +1,3 @@
-// Implementation of the QuestionService interface
 package com.hcoders.portal.service.serviceImpl;
 
 import java.util.List;
@@ -14,35 +13,32 @@ import com.hcoders.portal.service.QuestionService;
 
 import jakarta.transaction.Transactional;
 
-@Service  // Marks this class as a service component in the Spring context
-@Qualifier("questionServiceImpl") // Used to specify this implementation if multiple exist
-@Transactional // Ensures all database operations in this service are executed within a transaction
+@Service
+@Qualifier("questionServiceImpl")
+@Transactional
 public class QuestionServiceImpl implements QuestionService {
 
-    @Autowired  // Injects the QuestionRepository dependency
-    private QuestionRepository questionRepository;
+	@Autowired
+	private QuestionRepository questionRepository;
 
-    // Retrieves all Questions associated with a specific Test ID
-    @Override
-    public List<Question> findByTestId(Long testId) {
-        return questionRepository.findByTest_Id(testId);
-    }
+	@Override
+	public List<Question> findByTestId(Long testId) {
+		return questionRepository.findByTest_Id(testId);
+	}
 
-    // Saves a Question entity to the database
-    @Override
-    public Question save(Question question) {
-        return questionRepository.save(question);
-    }
+	@Override
+	public Question save(Question question) {
+		return questionRepository.save(question);
+	}
 
-    // Retrieves a Question by its ID
-    @Override
-    public Optional<Question> findById(Long questionId) {
-        return questionRepository.findById(questionId);
-    }
+	@Override
+	public Optional<Question> findById(Long questionId) {
+		return questionRepository.findById(questionId);
+	}
 
-    // Deletes a Question by its ID
-    @Override
-    public void deleteById(Long questionId) {
-        questionRepository.deleteById(questionId);
-    }
+	@Override
+	public void deleteById(Long quesstionId) {
+		questionRepository.deleteById(quesstionId);
+	}
+
 }

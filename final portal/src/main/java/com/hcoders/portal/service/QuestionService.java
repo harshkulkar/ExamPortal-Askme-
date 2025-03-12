@@ -1,4 +1,3 @@
-// Service interface for managing Question entities
 package com.hcoders.portal.service;
 
 import java.util.List;
@@ -8,15 +7,11 @@ import com.hcoders.portal.model.Question;
 
 public interface QuestionService {
 
-    // Retrieves a Question by its ID
-    Optional<Question> findById(Long questionId);
+	Optional<Question> findById(Long questionId);
+	
+	List<Question> findByTestId(Long testId);
 
-    // Retrieves all Questions associated with a specific Test ID
-    List<Question> findByTestId(Long testId);
-
-    // Saves a Question entity to the database
-    Question save(Question question);
-
-    // Deletes a Question by its ID
-    void deleteById(Long questionId);
+	Question save(Question question);
+	
+	void deleteById(Long quesstionId);
 }

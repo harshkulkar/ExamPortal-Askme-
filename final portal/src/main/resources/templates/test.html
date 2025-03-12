@@ -86,203 +86,161 @@
 	}
 	</style>
 </head>
+
 <body>
-    <!-- Loader wrapper: Displays a loading animation before the page is fully loaded -->
-    <div id="loader-wrapper">
-        <div class="triple-spinner"></div>
-    </div>
-
-    <!-- Main wrapper for the test page with a background wave effect -->
-    <div class="wrapper wave">
-        <!-- Form for submitting test answers -->
-        <form id="result-form" th:action="@{/finish-test}" th:object="${wrapper}" th:method="post">
-            <div class="container">
-                <div class="row">
-                    <!-- Main content area (questions section) -->
-                    <div class="col-lg-9 col-md-12">
-                        <div id="page-content" class="page-content">
-                            <!-- Loop through each question in the test -->
-                            <section th:each="question, i : ${wrapper.questionsList}" th:id="'section' + ${i.index + 1}">
-                                <!-- Hidden input field to bind question data -->
-                                <input type="hidden" th:field="*{questionsList[__${i.index}__]}" />
-                                
-                                <!-- Display the test name (only for the first question) -->
-                                <h3 class="mb-4 title" style="color: black;" th:if="${i.index == 0}" th:text="${test.name}"></h3>
-
-                                <!-- Question card -->
-                                <div class="card mb-3">
-                                    <div class="card-body" style="color: black;">
-                                        <h5 class="card-title" style="color: black;">
-                                            (<span th:text="${question.points}"></span> points)
-                                            Question <span th:text="${i.index + 1}"></span>
-                                        </h5>
-                                        <!-- Display question text -->
-                                        <p class="card-text" th:text="${question.text}"></p>
-                                    </div>
-                                </div>
-
-                                <!-- Answer choices section -->
-                                <div class="card card--a card--l card-text" style="color: black;">
-                                    <div class="quiz">
-                                        <div class="question">
-                                            <ul class="has-answer">
-                                                <div th:id="'question' + ${question.questionId}" class="question-number">
-                                                    <!-- Loop through each answer for the question -->
-                                                    <th:block th:each="answer, j : ${question.answers}">
-                                                        <!-- Hidden checkbox input for answer selection -->
-                                                        <input type="checkbox" th:name="|questionsList[__${i.index}__].answers[__${j.index}__].selected|" value="on" />
-                                                        <input type="checkbox" th:id="'box-' + ${i.index + 1} + ${j.index + 1}" th:name="|questionsList[__${i.index}__].answers[__${j.index}__].selected|" />
-                                                        <!-- Label displaying answer text -->
-                                                        <label th:text="${answer.text}" th:for="'box-' + ${i.index + 1} + ${j.index + 1}" class="scroll">answer text</label>
-                                                    </th:block>
-                                                </div>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </div>
-                            </section>
-                        </div>
-                    </div>
-
-                    <!-- Timer and finish button section -->
-                    <div class="col-lg-3 col-md-12">
-                        <div class="row jstify-center-row">
-                            <div class="col-lg-12">
-                                <div class="timer">
-                                    <div class="pagination-container">
-                                        <h3 class="active">
-                                            <!-- Countdown timer display -->
-                                            <div class="counter" id="clockdiv">
-                                                <div class="sq">
-                                                    <span class="hours bord">00</span>
-                                                    <span class="smalltext">Hours</span>
-                                                </div>
-                                                <div class="sq">
-                                                    <span class="minutes bord">00</span>
-                                                    <span class="smalltext">Mins</span>
-                                                </div>
-                                                <div class="sq">
-                                                    <span class="seconds bord">00</span>
-                                                    <span class="smalltext">Secs</span>
-                                                </div>
-                                            </div>
-                                        </h3>
-                                    </div>
-                                    <!-- Finish button to submit the test -->
-                                    <button class="finish-btn mt-2 mb-4">Finish</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </form>
-    </div>
+	<div id="loader-wrapper">
+		<div class="triple-spinner"></div>
+	</div>
+	<div class="wrapper wave">
+		<form id="result-form" th:action="@{/finish-test}" th:object="${wrapper}" th:method="post">
+			<div class="container ">
+				<div class="row">
+					<div class="col-lg-9 col-md-12">
+						<div id="page-content" class="page-content">
+							<section th:each="question,i : ${wrapper.questionsList}" th:id="'section' + ${i.index + 1}"> <input type="hidden" th:field="*{questionsList[__${i.index}__]}" />
+								<h3 class="mb-4 title" style="color: black;" th:if="${i.index == 0}" th:text="${test.name}"></h3>
+								<div class="card mb-3">
+									<div class="card-body" style="color: black;">
+										<h5 class="card-title" style="color: black;"> (<span th:text="${question.points}"></span> points) Question <span th:text="${i.index + 1}"></span>
+										</h5>
+										<p class="card-text" th:text="${question.text}"></p>
+									</div>
+								</div>
+								<div class="card card--a card--l card-text" style="color: black;">
+									<div class="quiz">
+										<div class="question">
+											<ul class="has-answer">
+												<div th:id="'question' + ${question.questionId}" class="question-number">
+													<th:block th:each="answer,j : ${question.answers}">
+														<input type="checkbox" th:name="|questionsList[__${i.index}__].answers[__${j.index}__].selected|" value="on" />
+														<input type="checkbox" th:id="'box-' + ${i.index + 1} + ${j.index + 1}" th:name="|questionsList[__${i.index}__].answers[__${j.index}__].selected|" />
+														<label th:text="${answer.text}" th:for="'box-' + ${i.index + 1} + ${j.index + 1}" class="scroll">answer text</label>
+													</th:block>
+												</div>
+											</ul>
+										</div>
+									</div>
+								</div>
+							</section>
+						</div>
+					</div>
+					<div class="col-lg-3 col-md-12">
+						<div class="row jstify-center-row">
+							<div class="col-lg-12">
+								<div class="timer">
+									<div class="pagination-container">
+										<h3 class="active">
+											<div class="counter" id="clockdiv">
+												<div class="sq">
+													<span class="hours bord">00</span> <span class="smalltext">Hours</span>
+												</div>
+												<div class="sq">
+													<span class="minutes bord">00</span> <span class="smalltext">Mins</span>
+												</div>
+												<div class="sq">
+													<span class="seconds bord">00</span> <span class="smalltext">Secs</span>
+												</div>
+											</div>
+										</h3>
+									</div>
+									<button class="finish-btn  mt-2 mb-4">Finish</button>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</form>
+	</div>
 </body>
-
-<!-- jQuery UI libraries -->
+<!-- jQuery UI -->
 <script th:src="@{/js/jquery/jquery-ui.min.js}"></script>
 <script th:src="@{/js/jquery/jquery.ui.touch-punch.min.js}"></script>
-<!-- jQuery Scrollbar plugin -->
+<!-- jQuery Scrollbar -->
 <script th:src="@{/js/jquery/jquery.scrollbar.min.js}"></script>
-
 <script th:inline="javascript">
 $(window).on('load', function() {
-    setTimeout(removeLoader, 3000); // Wait for page load + 3 seconds before removing loader
+	setTimeout(removeLoader, 3000); //wait for page load PLUS three seconds.
 });
 
-// Function to remove the loader after a delay
 function removeLoader() {
-    $("#loader-wrapper").fadeOut(100, function() {
-        $("#loader-wrapper").remove();
-        $(document).ready(function() {
+	$("#loader-wrapper").fadeOut(100, function() {
+		// fadeOut complete. Remove the loading div
+		$("#loader-wrapper").remove();
+		//show the page after removing the loader
+		$(document).ready(function() {
+			function getTimeRemaining(timeLeft) {
+				if(timeLeft < 0) {
+					return false;
+				}
+				var hoursLeft = Math.floor(timeLeft / 3600);
+				var minutesLeft = Math.floor((timeLeft - hoursLeft * 3600) / 60);
+				var secondsLeft = Math.floor(timeLeft - hoursLeft * 3600 - minutesLeft * 60);
+				return {
+					'total': timeLeft,
+					'hours': hoursLeft,
+					'minutes': minutesLeft,
+					'seconds': secondsLeft
+				};
+			}
 
-            // Function to calculate remaining time in hours, minutes, and seconds
-            function getTimeRemaining(timeLeft) {
-                if (timeLeft < 0) {
-                    return false;
-                }
-                var hoursLeft = Math.floor(timeLeft / 3600);
-                var minutesLeft = Math.floor((timeLeft - hoursLeft * 3600) / 60);
-                var secondsLeft = Math.floor(timeLeft - hoursLeft * 3600 - minutesLeft * 60);
-                return {
-                    'total': timeLeft,
-                    'hours': hoursLeft,
-                    'minutes': minutesLeft,
-                    'seconds': secondsLeft
-                };
-            }
+			function initializeClock(id, timeLeft) {
+				var clock = document.getElementById(id);
+				var hoursSpan = clock.querySelector('.hours');
+				var minutesSpan = clock.querySelector('.minutes');
+				var secondsSpan = clock.querySelector('.seconds');
 
-            // Function to initialize and start the countdown timer
-            function initializeClock(id, timeLeft) {
-                var clock = document.getElementById(id);
-                var hoursSpan = clock.querySelector('.hours');
-                var minutesSpan = clock.querySelector('.minutes');
-                var secondsSpan = clock.querySelector('.seconds');
-
-                function updateClock() {
-                    timeLeft--;
-                    var t = getTimeRemaining(timeLeft);
-                    if (t) {
-                        hoursSpan.innerHTML = ('0' + t.hours).slice(-2);
-                        minutesSpan.innerHTML = ('0' + t.minutes).slice(-2);
-                        secondsSpan.innerHTML = ('0' + t.seconds).slice(-2);
-                    } else {
-                        clearInterval(timeinterval);
-                        $('#result-form').submit(); // Auto-submit form when time runs out
-                    }
-                }
-                updateClock();
-                var timeinterval = setInterval(updateClock, 1000);
-            }
-
-            // Get test duration from Thymeleaf variable and convert to seconds
-            var time = /*[[${test.time}]]*/ 
-            timeLeft = time * 60;
-            initializeClock('clockdiv', timeLeft);
-        });
-    });
+				function updateClock() {
+					timeLeft--;
+					var t = getTimeRemaining(timeLeft);
+					if(t) {
+						hoursSpan.innerHTML = ('0' + t.hours).slice(-2);
+						minutesSpan.innerHTML = ('0' + t.minutes).slice(-2);
+						secondsSpan.innerHTML = ('0' + t.seconds).slice(-2);
+					} else {
+						clearInterval(timeinterval);
+						$('#result-form').submit();
+					}
+				}
+				updateClock();
+				var timeinterval = setInterval(updateClock, 1000);
+			}
+			var time = /*[[${test.time}]]*/ 
+			timeLeft = time * 60;
+			initializeClock('clockdiv', timeLeft);
+		});
+	});
 }
-
-// Prevent user from navigating back to a previous page
 window.history.forward();
-
 var i = 0;
 
-// Function to handle test cheating (blur event)
 function pause() {
-    document.body.classList.add('paused');
+	document.body.classList.add('paused');
 
-    function increase() {
-        i++;
-        if (i > 1) {
-            // If the user clicks outside the test page again, auto-submit
-            $("#result-form").trigger("reset");
-            $('#result-form').submit();
-        } else {
-            // Show a warning on the first attempt
-            iziToast.warning({
-                title: 'Warning',
-                message: 'If you click outside the Test Content page again, the test will be submitted automatically!',
-                position: 'topCenter',
-                timeout: 200000,
-            });
-        }
-    }
-    increase();
+	function increase() {
+		i++;
+		if(i > 1) {
+			$("#result-form").trigger("reset");
+			$('#result-form').submit();
+		} else {
+			iziToast.warning({
+			title: 'Warning',
+			message: 'If you clicked anywhere outside of the Test Content page again, the test will be submitted automatically!',
+			position: 'topCenter',
+			timeout: 200000,
+		});
+			
+		}
+	}
+	increase();
 }
 
-// Function to resume test (focus event)
 function play() {
-    document.body.classList.remove('paused');
+	document.body.classList.remove('paused');
 }
-
-// Detect when the user switches to another tab or window
 window.addEventListener('blur', pause);
 window.addEventListener('focus', play);
-
-// Replace browser history to prevent navigating back to a test page
-if (window.history.replaceState) {
-    window.history.replaceState(null, null, window.location.origin + '/tests');
+if(window.history.replaceState) {
+	window.history.replaceState(null, null, window.location.origin + '/tests');
 }
 </script>
